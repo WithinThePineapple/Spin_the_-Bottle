@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" 
+        content="default-src 'self' https://*.zyrosite.com;
+                 script-src 'unsafe-inline' 'self';
+                 style-src 'unsafe-inline' 'self';
+                 img-src https://*.zyrosite.com data:;">
+  <title>Spin the Bottle: Passion Play</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: transparent;
+      color: white;
+    }
+
+    /* Game Icon */
+    .game-icon {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 65px;   /* matched to other games */
+      height: 65px;  /* matched to other games */
+      cursor: pointer;
+      transition: all .3s ease;
+      z-index: 1000;
+    }
+    .game-icon:hover {
+      transform: translateX(-50%) scale(1.2);
+    }
+
+    /* Overlay */
+    .game-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1001;
+      transition: opacity .3s ease;
+    }
+
+    /* Game Box */
+    .game-box {
+      background: rgba(0,0,0,.3);
+      padding: 25px;
+      border-radius: 15px;
+      position: relative;
+      max-width: 95%;
+      width: 700px;
+      text-align: center;
+      color: white;
+    }
+
+    /* Close Button */
+    .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      font-size: 32px;
+      color: #ff4d4d;
+      cursor: pointer;
+      text-shadow: 0 2px 4px rgba(0,0,0,.2);
+    }
+
+    /* Bottle Game Layout */
+    .bottle-container {
+      width: 450px;
+      height: 450px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .bottle {
+      width: 350px;
+      height: auto;
+      transition: transform 4s cubic-bezier(0.25, 1, 0.5, 1);
+      transform-origin: 50% 50%;
+    }
+
+    /* Spin Button (same as Draw Card size) */
+    .spin-btn {
+      margin-top: 15px;
+      padding: 15px 40px;   /* matched */
+      font-size: 18px;      /* matched */
+      background: #4da6ff;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background .3s ease;
+    }
+    .spin-btn:hover {
+      background: #1e90ff;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+      line-height: 1.5;
+      min-height: 50px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .game-box {
+        width: 90%;
+        padding: 15px;
+      }
+      .bottle-container {
+        width: 300px;
+        height: 300px;
+      }
+      .bottle {
+        width: 220px;
+      }
+      .game-icon {
+        width: 65px;
+        height: 65px;
+      }
+      .spin-btn {
+        font-size: 18px;
+        padding: 15px 40px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .bottle-container {
+        width: 220px;
+        height: 220px;
+      }
+      .bottle {
+        width: 180px;
+      }
+      .spin-btn {
+        padding: 12px 30px;
+        font-size: 16px;
+      }
+      .result {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Game Icon -->
+  <img src="https://assets.zyrosite.com/YrD3QqD87EH4j868/bottle-game-icon-Yg2yzGrvO3Fk8XWd.png"
+       class="game-icon"
+       onclick="document.getElementById('bottleGameOverlay').style.display='flex'"
+       alt="Spin the Bottle Game Icon"
+       aria-label="Open Spin the Bottle Game">
+
+  <!-- Game Overlay -->
+  <div class="game-overlay" id="bottleGameOverlay" onclick="if(event.target===this) this.style.display='none'">
+    <div class="game-box">
+      <span class="close-btn"
+            onclick="document.getElementById('bottleGameOverlay').style.display='none'"
+            aria-label="Close game">&times;</span>
+
+      <!-- Bottle Spinner -->
+      <div class="bottle-container">
+        <img id="bottle" class="bottle" 
+             src="https://assets.zyrosite.com/YrD3QqD87EH4j868/bottle-YbNJjG68KXczD8Ve.png" 
+             alt="Bottle">
+      </div>
+      
+      <button class="spin-btn" onclick="spinBottle()">SPIN BOTTLE</button>
+      <div class="result" id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    const bottle = document.getElementById('bottle');
+    const result = document.getElementById('result');
+    let currentRotation = 0;
+
+    const actions = [
+      "Passionately kiss the person to your right.",
+      "Passionately kiss the person to your left.",
+      "Remove one article of clothing from the person to your right.",
+      "Remove one article of clothing from the person to your left.",
+      "Pick a person and have them remove an article of clothing from you.",
+      "Whisper to the person to your left a fantasy you have.",
+      "Whisper to the person to your right a fantasy you have.",
+      "Have them remove one article of clothing from you.",
+      "Dare the person to your right to do something.",
+      "Dare the person to your left to do something.",
+      "Everyone in the circle ask you one question.",
+      "Ask somebody in the circle something you want to know."
+    ];
+
+    function spinBottle() {
+      result.textContent = "";
+
+      const extraSpins = 3 * 360;
+      const randomDeg = Math.floor(Math.random() * 360);
+      const newRotation = currentRotation + extraSpins + randomDeg;
+
+      bottle.style.transform = `rotate(${newRotation}deg)`;
+      currentRotation = newRotation;
+
+      const randomAction = actions[Math.floor(Math.random() * actions.length)];
+      setTimeout(() => {
+        result.textContent = randomAction;
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
