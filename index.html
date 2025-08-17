@@ -23,8 +23,8 @@
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      width: 65px;   /* matched to other games */
-      height: 65px;  /* matched to other games */
+      width: 65px;
+      height: 65px;
       cursor: pointer;
       transition: all .3s ease;
       z-index: 1000;
@@ -48,21 +48,21 @@
       transition: opacity .3s ease;
     }
 
-    /* Game Box - now consistent with Dice / Coin Flip / PNPL */
+    /* Game Box */
     .game-box {
       background: rgba(0,0,0,.3);
       padding: 25px;
       border-radius: 15px;
       position: relative;
       max-width: 95%;
-      width: 800px;             /* match other games */
+      width: 800px;
       text-align: center;
       color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 650px;        /* match other games */
-      justify-content: center;  /* center vertically */
+      min-height: 650px;
+      justify-content: center;
     }
 
     /* Close Button */
@@ -93,11 +93,11 @@
       transform-origin: 50% 50%;
     }
 
-    /* Spin Button (same as Draw Card size) */
+    /* Spin Button */
     .spin-btn {
-      margin-top: 15px;
-      padding: 15px 40px;   /* matched */
-      font-size: 18px;      /* matched */
+      margin-top: 25px; /* moved lower */
+      padding: 15px 40px;
+      font-size: 18px;
       background: #4da6ff;
       color: #fff;
       border: none;
@@ -110,7 +110,7 @@
     }
 
     .result {
-      margin-top: 15px;
+      margin-top: 25px; /* moved lower */
       font-size: 22px;
       font-weight: bold;
       color: white;
@@ -121,16 +121,16 @@
     /* Responsive */
     @media (max-width: 768px) {
       .game-box {
-        min-height: 500px;   /* match dice/coin/pnpl */
+        min-height: 500px;
         width: 90%;
         padding: 15px;
       }
       .bottle-container {
-        width: 300px;
-        height: 300px;
+        width: 340px;
+        height: 340px;
       }
       .bottle {
-        width: 220px;
+        width: 260px; /* larger bottle on mobile */
       }
       .game-icon {
         width: 65px;
@@ -139,27 +139,33 @@
       .spin-btn {
         font-size: 18px;
         padding: 15px 40px;
+        margin-top: 30px; /* extra space */
+      }
+      .result {
+        margin-top: 30px; /* extra space */
       }
     }
 
     @media (max-width: 480px) {
       .game-box {
-        min-height: 450px;   /* match dice/coin/pnpl */
+        min-height: 450px;
         padding: 15px;
       }
       .bottle-container {
-        width: 220px;
-        height: 220px;
+        width: 260px;
+        height: 260px;
       }
       .bottle {
-        width: 180px;
+        width: 220px; /* larger bottle on small screens */
       }
       .spin-btn {
         padding: 12px 30px;
         font-size: 16px;
+        margin-top: 35px; /* push lower */
       }
       .result {
         font-size: 18px;
+        margin-top: 35px; /* push lower */
       }
     }
   </style>
