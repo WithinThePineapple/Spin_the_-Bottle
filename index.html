@@ -48,16 +48,21 @@
       transition: opacity .3s ease;
     }
 
-    /* Game Box */
+    /* Game Box - now consistent with Dice / Coin Flip / PNPL */
     .game-box {
       background: rgba(0,0,0,.3);
       padding: 25px;
       border-radius: 15px;
       position: relative;
       max-width: 95%;
-      width: 700px;
+      width: 800px;             /* match other games */
       text-align: center;
       color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 650px;        /* match other games */
+      justify-content: center;  /* center vertically */
     }
 
     /* Close Button */
@@ -116,6 +121,7 @@
     /* Responsive */
     @media (max-width: 768px) {
       .game-box {
+        min-height: 500px;   /* match dice/coin/pnpl */
         width: 90%;
         padding: 15px;
       }
@@ -137,6 +143,10 @@
     }
 
     @media (max-width: 480px) {
+      .game-box {
+        min-height: 450px;   /* match dice/coin/pnpl */
+        padding: 15px;
+      }
       .bottle-container {
         width: 220px;
         height: 220px;
@@ -195,8 +205,8 @@
       "Whisper to the person to your left a fantasy you have.",
       "Whisper to the person to your right a fantasy you have.",
       "Have them remove one article of clothing from you.",
-      "Make a dare to the person on your right.",
-      "Make a dare to the person on your left.",
+      "Dare the person to your right to do something.",
+      "Dare the person to your left to do something.",
       "Everyone in the circle ask you one question.",
       "Ask somebody in the circle something you want to know."
     ];
@@ -219,4 +229,3 @@
   </script>
 </body>
 </html>
-
