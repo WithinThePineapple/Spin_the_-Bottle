@@ -76,6 +76,23 @@
       text-shadow: 0 2px 4px rgba(0,0,0,.2);
     }
 
+    /* How to Play Button */
+    .how-to-btn {
+      position: absolute;
+      top: 12px;
+      left: 15px;
+      font-size: 20px;
+      color: #4da6ff;
+      cursor: pointer;
+      text-shadow: 0 1px 2px rgba(0,0,0,.3);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .how-to-btn:hover {
+      color: #1e90ff;
+    }
+
     /* Bottle Game Layout */
     .bottle-container {
       width: 450px;
@@ -118,49 +135,52 @@
       min-height: 50px;
     }
 
+    /* How to Play Overlay */
+    .how-to-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1002;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .how-to-box {
+      background: rgba(0,0,0,.9);
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 600px;
+      width: 90%;
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+    .how-to-box .close-btn {
+      top: 10px;
+      right: 10px;
+      font-size: 28px;
+      color: #ff4d4d;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
-      .game-box {
-        min-height: 500px;
-        width: 90%;
-        padding: 15px;
-      }
-      .bottle-container {
-        width: 400px;
-        height: 400px;
-      }
-      .game-icon {
-        width: 65px;
-        height: 65px;
-      }
-      .spin-btn {
-        font-size: 18px;
-        padding: 15px 40px;
-        margin-top: 30px;
-      }
-      .result {
-        margin-top: 30px;
-      }
+      .game-box { min-height: 500px; width: 90%; padding: 15px; }
+      .bottle-container { width: 400px; height: 400px; }
+      .game-icon { width: 65px; height: 65px; }
+      .spin-btn { font-size: 18px; padding: 15px 40px; margin-top: 30px; }
+      .result { margin-top: 30px; }
     }
 
     @media (max-width: 480px) {
-      .game-box {
-        min-height: 450px;
-        padding: 15px;
-      }
-      .bottle-container {
-        width: 320px;
-        height: 320px;
-      }
-      .spin-btn {
-        padding: 12px 30px;
-        font-size: 16px;
-        margin-top: 35px;
-      }
-      .result {
-        font-size: 18px;
-        margin-top: 35px;
-      }
+      .game-box { min-height: 450px; padding: 15px; }
+      .bottle-container { width: 320px; height: 320px; }
+      .spin-btn { padding: 12px 30px; font-size: 16px; margin-top: 35px; }
+      .result { font-size: 18px; margin-top: 35px; }
     }
   </style>
 </head>
@@ -175,6 +195,12 @@
   <!-- Game Overlay -->
   <div class="game-overlay" id="bottleGameOverlay" onclick="if(event.target===this) this.style.display='none'">
     <div class="game-box">
+      <!-- How to Play Button -->
+      <div class="how-to-btn" onclick="document.getElementById('howToOverlay').style.display='flex'">
+        &#9432; How to Play
+      </div>
+
+      <!-- Close Button -->
       <span class="close-btn"
             onclick="document.getElementById('bottleGameOverlay').style.display='none'"
             aria-label="Close game">&times;</span>
@@ -191,30 +217,39 @@
     </div>
   </div>
 
+  <!-- How to Play Overlay -->
+  <div class="how-to-overlay" id="howToOverlay" onclick="if(event.target===this) this.style.display='none'">
+    <div class="how-to-box">
+      <span class="close-btn" onclick="document.getElementById('howToOverlay').style.display='none'">&times;</span>
+      <h2>How to Play</h2>
+      <p>Spin the bottle. When it stops, the person at the top of the bottle performs the action displayed below.</p>
+    </div>
+  </div>
+
   <script>
     const bottle = document.getElementById('bottle');
     const result = document.getElementById('result');
     let currentRotation = 0;
 
     const actions = [
-  "Share your favorite turn-on with the group.",
-  "Tell the group two truths and one lie (about your desires) — let them guess.",
-  "Let the person to your left choose a nickname for you for the rest of the game.",
-  "Give the person to your right a 2-minute massage (shoulders, hands, or back).",
-  "Choose someone and let them spank you once (or vice versa).",
-  "Pick two people and make them kiss (if they’re comfortable).",
-  "The group votes who you should give a lap dance to for 30 seconds.",
-  "Kiss the person to your right.",
-  "Remove one article of clothing from the person to your left.",
-  "Pick a person and have them remove an article of clothing from you.",
-  "Whisper to the person to your left a fantasy you have.",
-  "Have the person of your choice remove one article of clothing from you.",
-  "Make a dare for the person on your right.",
-  "Everyone in the circle can ask you one question each.",
-  "Ask somebody in the circle something you want to know about them.",
-  "Have someone remove one article of clothing from you.",
-  "Let the person to your left whisper something naughty in your ear.",
-  "Ask the group a spicy ‘would you rather’ question and let everyone answer."
+      "Share your favorite turn-on with the group.",
+      "Tell the group two truths and one lie (about your desires) — let them guess.",
+      "Let the person to your left choose a nickname for you for the rest of the game.",
+      "Give the person to your right a 2-minute massage (shoulders, hands, or back).",
+      "Choose someone and let them spank you once (or vice versa).",
+      "Pick two people and make them kiss (if they’re comfortable).",
+      "The group votes who you should give a lap dance to for 30 seconds.",
+      "Kiss the person to your right.",
+      "Remove one article of clothing from the person to your left.",
+      "Pick a person and have them remove an article of clothing from you.",
+      "Whisper to the person to your left a fantasy you have.",
+      "Have the person of your choice remove one article of clothing from you.",
+      "Make a dare for the person on your right.",
+      "Everyone in the circle can ask you one question each.",
+      "Ask somebody in the circle something you want to know about them.",
+      "Have someone remove one article of clothing from you.",
+      "Let the person to your left whisper something naughty in your ear.",
+      "Ask the group a spicy ‘would you rather’ question and let everyone answer."
     ];
 
     function spinBottle() {
@@ -235,4 +270,3 @@
   </script>
 </body>
 </html>
-
